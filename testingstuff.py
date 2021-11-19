@@ -1,7 +1,24 @@
 def singleGame():
-    print(format("Yahtzee Score Card")
-    print(format(aces)
+    print(format("Yahtzee Score Card"))
+    print(format("Upper Section"
+    print(format(aces))
+    print(format(twos))
+    print(format(threes))
+    print(format(fours))
+    print(format(fives))
+    print(format(sixes))
+    print(format(upperTotal))
+    print(format(upperBonus))
     print("")
+    print(format("Lower Section"))
+    print(format(threeOfKind))
+    print(format(fourOfKind))
+    print(format(smallStraight))
+    print(format(largeStraight))
+    print(format(yahtzee))
+    print(format(chance))
+    print(format(lowerTotal))
+
     holdPrompt = input("Swap any dice? (y for HITME, n for HOLD): ")
     print("")
     holdPrompt.replace(" ", "")
@@ -21,6 +38,7 @@ def main():
     fives = 0
     sixes = 0
     upperTotal = 0
+    lowerTotal = 0
     upperBonus = 0
     yahtzee = 0
     fullHouse = 0
@@ -28,6 +46,7 @@ def main():
     largeStraight = 0
     fourOfKind = 0
     threeOfKind = 0
+    chance = 0
 
     print("")
     print("-" * 80)
