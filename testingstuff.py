@@ -60,3 +60,26 @@ def main():
     print(name)
     print(format("Game 1", '>43s'))
     print("")
+    game = list(game)
+    for x in game:
+        if x == True:
+            statIndex = game.index(x)
+    if statIndex == 0:
+        yahtzee += 1
+    elif statIndex == 1:
+        fullHouse += 1
+    elif statIndex == 2:
+        smallStraight += 1
+    elif statIndex == 3:
+        largeStraight += 1
+    elif statIndex == 4:
+        fourOfKind += 1
+    elif statIndex == 5:
+        threeOfKind += 1
+    else:
+        pass
+    print("")
+    gameCount = 1
+    print("END OF GAME", gameCount)
+    print("-" * 80)
+    print("")
