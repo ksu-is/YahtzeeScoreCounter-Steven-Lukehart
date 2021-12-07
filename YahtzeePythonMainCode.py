@@ -1,257 +1,213 @@
-
-from random import randint
-
 def singleGame():
-    roll1 = roll()
-    print(format("You rolled: ", '64s'), roll1)
-    print("")
-    holdPrompt = input("Swap any dice? (y for HITME, n for HOLD): ")
-    print("")
-    holdPrompt.replace(" ", "")
-    holdPrompt.lower()
-    while holdPrompt != "y" and holdPrompt != "n":
-        print("INCORRECT INPUT\n")
-        holdPrompt = input("Swap any dice? (y for HITME, n for HOLD): ")
-        print("")
-        holdPrompt.replace(" ", "")
-        holdPrompt.lower()
-
-    if holdPrompt == "y":
-        roll2 = swap(roll1)
-        print("")
-        print("Swapping:", roll2[1])
-        print("")
-        print(format("You rolled: ", '64s'), roll2[0])
-        print("")
-        holdPrompt2 = input("Swap any dice? (y for HITME, n for HOLD): ")
-        print("")
-        while holdPrompt2 != "y" and holdPrompt2 != "n":
-            print("INCORRECT INPUT\n")
-            holdPrompt2 = input("Swap any dice? (y for HITME, n for HOLD): ")
-            print("")
-            holdPrompt2.replace(" ", "")
-            holdPrompt2.lower()
-        if holdPrompt2 == "y":
-            swapPrint = []
-            roll3 = swap(roll2[0])
-            print("")
-            print("Swapping:", roll3[1])
-            print("")
-            print(format("You rolled: ", '64s'), roll3[0])
-            print("")
-            stat = rollType(roll3[0])
-        else:
-            stat = rollType(roll2[0])
-    elif holdPrompt == "n":
-        stat = rollType(roll1)
-    else:
-        pass
-    return stat
-
-
-def roll():
-    dice = []
-    for x in range(5):
-        dice.append(randint(1, 6))
-    return dice
-
-
-def swap(diceList):
-    valid = True
-    swapDice = input("Type position of each die you'd like to swap (1-5): ")
-    swapDice = swapDice.replace(",", "")
-    swapDice = swapDice.replace(" ", "")
-    swapDiceList = []
-    for x in swapDice:
-        swapDiceList.append(x)
-    for x in swapDiceList:
-        x = str(x)
-        if x.isdigit():
-            x = int(x)
-            if x in range(1, 6):
-                valid = True
-            else:
-                valid = False
-        else:
-            valid = False
-
-    while valid == False:
-        print("")
-        print("INCORRECT INPUT")
-        print("")
-        swapDice = input("Type position of each die you'd like to swap (1-5): ")
-        swapDice = swapDice.replace(",", "")
-        swapDice = swapDice.replace(" ", "")
-        swapDiceList = []
-        for x in swapDice:
-            swapDiceList.append(x)
-        for x in swapDiceList:
-            x = str(x)
-            if x.isdigit():
-                x = int(x)
-                if x in range(1, 6):
-                    valid = True
-                else:
-                    valid = False
-            else:
-                valid = False
-
-    swapIndex = []
-
-    for x in swapDiceList:
-        swapIndex.append(int(x)-1)
-
-    for x in swapIndex:
-        x = int(x)
-        x -= 1
-
-    for x in swapIndex:
-        diceList.pop(x)
-        diceList.insert(x, randint(1, 6))
-
-    # returns modified list at index [0] and dice to be swapped at [1]
-    return diceList, swapDiceList
-
-def rollType(diceList):
-    counts = []
-    for x in diceList:
-        counts.append(diceList.count(x))
-    diceListNew = sorted(diceList)
-    diceListNew = list(set(diceListNew))
-    yahtzee = False
-    fullHouse = False
-    smallStraight = False
-    largeStraight = False
-    fourOfKind = False
-    threeOfKind = False
-    oneCount = 0
-
-    if 5 in counts:
-        yahtzee = True
-        print(format("YAHTZEE", '>80s'))
-    elif 3 in counts and 2 in counts:
-        fullHouse = True
-        print(format("FULL HOUSE", '>80s'))
-    elif 3 in counts and 2 not in counts:
-        threeOfKind = True
-        print(format("THREE OF A KIND", '>80s'))
-    elif 4 in counts:
-        fourOfKind = True
-        print(format("FOUR OF A KIND", '>80s'))
-    elif len(diceListNew) == 3:
-        print(format("NOTHING SPECIAL", '>80s'))
-    elif len(diceListNew) == 4:
-        if diceListNew[-2] == diceListNew[-1] -1 and diceListNew[-3] == diceListNew[-2] - 1 and diceListNew[-4] == diceListNew[-3] - 1:
-            smallStraight = True
-            print(format("SMALL STRAIGHT", '>80s'))
-        else:
-            print(format("NOTHING SPECIAL", '>80s'))
-    elif len(diceListNew) == 5:
-        if diceListNew[-2] == diceListNew[-1] - 1 and diceListNew[-3] == diceListNew[-2] - 1 and diceListNew[-4] == diceListNew[-3] - 1 and diceListNew[-5] == diceListNew[-4] - 1:
-            largeStraight = True
-            print(format("LARGE STRAIGHT", '>80s'))
-        elif diceListNew[-2] == diceListNew[-1] -1 and diceListNew[-3] == diceListNew[-2] - 1 and diceListNew[-4] == diceListNew[-3] - 1:
-            smallStraight = True
-            print(format("SMALL STRAIGHT", '>80s'))
-        elif diceListNew[-3] == diceListNew[-2] - 1 and diceListNew[-4] == diceListNew[-3] -1 and diceListNew[-5] == diceListNew[-4] - 1:
-            smallStraight = True
-            print(format("SMALL STRAIGHT", '>80s'))
-        else:
-            print(format("NOTHING SPECIAL", '>80s'))
-    else:
-        pass
-    result = yahtzee, fullHouse, smallStraight, largeStraight, fourOfKind, threeOfKind
-    return result
-
-def main():
+    aces = 0
+    twos = 0
+    threes = 0
+    fours = 0
+    fives = 0
+    sixes = 0
+    upperTotal = 0
+    lowerTotal = 0
+    upperBonus = 0
     yahtzee = 0
     fullHouse = 0
     smallStraight = 0
     largeStraight = 0
     fourOfKind = 0
     threeOfKind = 0
-    statIndex = 0
-    yahtzeePer = 0
-    fullHousePer = 0
-    smallStraightPer = 0
-    largeStraightPer = 0
-    fourOfKindPer = 0
-    threeOfKindPer = 0
+    chance = 0
+    totalScore = 0
+    turnCount = 1
+    #turnCount <=13 is a full game
+    while turnCount <= 13:
+        print("")
+        print("")
+        print(format("Yahtzee Score Card"))
+        print(format("Upper Section"))
+        print(format("(1) - ACES = "),(aces))
+        print(format("(2) - TWOS = "),(twos))
+        print(format("(3) - THREES = "),(threes))
+        print(format("(4) - FOURS = "),(fours))
+        print(format("(5) - FIVES = "),(fives))
+        print(format("(6) - SIXES = "),(sixes))
+        print(format("upperTotal = "),(upperTotal))
+        print(format("upperBonus = "),(upperTotal),("/"),("63"))
+        print("")
+        print(format("Lower Section"))
+        print(format("(7) - Three of a Kind = "),(threeOfKind))
+        print(format("(8) - Four of a Kind = "),(fourOfKind))
+        print(format("(9) - Full House = "),(fullHouse))
+        print(format("(10) - Small Straight = "),(smallStraight))
+        print(format("(11) - Large Straight = "),(largeStraight))
+        print(format("(12) - Yahtzee = "),(yahtzee))
+        print(format("(13) - Chance = "),(chance))
+        print(format("lowerTotal = "),(lowerTotal))
+        print("")
+        print("")
 
-    print("")
-    print("-" * 80)
-    print("")
-    print(format("Welcome to Fake Yahtzee!", '61s'), "Written by Coleo94")
-    print("")
-    print("-" * 80)
-    print("")
-    print(format("Game 1", '>43s'))
-    print("")
-    game = singleGame()
-    game = list(game)
-    for x in game:
-        if x == True:
-            statIndex = game.index(x)
-    if statIndex == 0:
-        yahtzee += 1
-    elif statIndex == 1:
-        fullHouse += 1
-    elif statIndex == 2:
-        smallStraight += 1
-    elif statIndex == 3:
-        largeStraight += 1
-    elif statIndex == 4:
-        fourOfKind += 1
-    elif statIndex == 5:
-        threeOfKind += 1
+        print(format("Press the number correlated to the box you'd like to add a score to."))
+        box = input('Enter number here: ')
+        #aces
+        if box == "1":
+            print(format("Please enter how many 1's you rolled this turn."))
+            aces = int(input('Enter 1s rolled here: '))
+            input("Press Enter to continue")
+        #twos
+        if box == "2":
+            print(format("Please enter how many 2's you rolled this turn."))
+            num = int(input('Enter 2s rolled here: '))
+            twos = num * 2
+            input("Press Enter to continue")
+        #threes
+        if box == "3":
+            print(format("Please enter how many 3's you rolled this turn."))
+            num = int(input('Enter 3s rolled here: '))
+            threes = num * 3
+            input("Press Enter to continue")
+        #fours
+        if box == "4":
+            print(format("Please enter how many 4's you rolled this turn."))
+            num = int(input('Enter 4s rolled here: '))
+            fours = num * 4
+            input("Press Enter to continue")
+        #fives
+        if box == "5":
+            print(format("Please enter how many 5's you rolled this turn."))
+            num = int(input('Enter 5s rolled here: '))
+            fives = num * 5
+            input("Press Enter to continue")
+        #sixes
+        if box == "6":
+            print(format("Please enter how many 6's you rolled this turn."))
+            num = int(input('Enter 6s rolled here: '))
+            sixes = num * 6
+            input("Press Enter to continue")
+        #three of a kind
+        if box == "7":
+            yesNoPrompt = input("Did you score a Three of a Kind? (y for yes, n for no): ")
+            yesNoPrompt.strip()
+            yesNoPrompt.lower()
+            if yesNoPrompt == "y":
+                print(format("Please enter the all five dice roles."))
+                num1=int(input('Enter the first number: '))
+                num2=int(input('Enter the second number: '))
+                num3=int(input('Enter the thrid number: '))
+                num4=int(input('Enter the fourth number: '))
+                num5=int(input('Enter the fifth number: '))
+                sum=num1+num2+num3+num4+num5
+                threeOfKind = sum
+                input("Press Enter to continue")
+            if yesNoPrompt == "n":
+                print(format("You scored a 0 in Three of a Kind."))
+                threeOfKind = 0
+                input("Press Enter to continue")
+        #four of a kind
+        if box == "8":
+            yesNoPrompt = input("Did you score a Four of a Kind? (y for yes, n for no): ")
+            yesNoPrompt.strip()
+            yesNoPrompt.lower()
+            if yesNoPrompt == "y":
+                print(format("Please enter the all five dice roles."))
+                num1=int(input('Enter the first number: '))
+                num2=int(input('Enter the second number: '))
+                num3=int(input('Enter the thrid number: '))
+                num4=int(input('Enter the fourth number: '))
+                num5=int(input('Enter the fifth number: '))
+                sum=num1+num2+num3+num4+num5
+                fourOfKind = sum
+                input("Press Enter to continue")
+            if yesNoPrompt == "n":
+                print(format("You scored a 0 in Four of a Kind."))
+                fourOfKind = 0
+                input("Press Enter to continue")
+        #full house
+        if box == "9":
+            yesNoPrompt = input("Did you score a Full House? (y for yes, n for no): ")
+            yesNoPrompt.strip()
+            yesNoPrompt.lower()
+            if yesNoPrompt == "y":
+                input("Press Enter to check off Full House.")
+                fullHouse = 25
+            if yesNoPrompt == "n":
+                input("You scored a 0 in Full House. Press Enter to continue.")
+                fullHouse = 0
+        #small straight
+        if box == "10":
+            yesNoPrompt = input("Did you score a Small Straight? (y for yes, n for no): ")
+            yesNoPrompt.strip()
+            yesNoPrompt.lower()
+            if yesNoPrompt == "y":
+                input("Press Enter to check off Small Straight.")
+                smallStraight = 30
+            if yesNoPrompt == "n":
+                input("You scored a 0 in Small Straight. Press Enter to continue.")
+                smallStraight = 0
+        #large straight
+        if box == "11":
+            yesNoPrompt = input("Did you score a Large Straight? (y for yes, n for no): ")
+            yesNoPrompt.strip()
+            yesNoPrompt.lower()
+            if yesNoPrompt == "y":
+                input("Press Enter to check off Large Straight.")
+                largeStraight = 40
+            if yesNoPrompt == "n":
+                input("You scored a 0 in Large Straight. Press Enter to continue.")
+                largeStraight = 0
+            #yahtzee
+        if box == "12":
+            yesNoPrompt = input("Did you score a Yahtzee? (y for yes, n for no): ")
+            yesNoPrompt.strip()
+            yesNoPrompt.lower()
+            if yesNoPrompt == "y":
+                input("Press Enter to check off Yahtzee!")
+                yahtzee = 50
+            if yesNoPrompt == "n":
+                input("You scored a 0 in Yahtzee. Press Enter to continue.")
+                yahtzee = 0
+        #chance
+        if box == "13":
+            print(format("Please enter the all five dice roles"))
+            num1=int(input('Enter the first number: '))
+            num2=int(input('Enter the second number: '))
+            num3=int(input('Enter the thrid number: '))
+            num4=int(input('Enter the fourth number: '))
+            num5=int(input('Enter the fifth number: '))
+            sum=num1+num2+num3+num4+num5
+            chance = sum
+            input("Press Enter to continue")
+        turnCount = turnCount + 1
+        upperTotal = aces + twos + threes + fours + fives + sixes
+        lowerTotal = threeOfKind + fourOfKind + chance + yahtzee + smallStraight + largeStraight
+        if upperTotal > 63:
+            upperBonus = 35
     else:
-        pass
-    print("")
-    gameCount = 1
-    print("END OF GAME", gameCount)
-    print("-" * 80)
-    print("")
-    gamesPrompt = input("Play another game? (y for yes, n for no): ")
-    gamesPrompt.strip()
-    gamesPrompt.lower()
-    while gamesPrompt != "y" and gamesPrompt != "n":
         print("")
-        print("INCORRECT INPUT")
         print("")
-        gamesPrompt = input("Play another game? (y for yes, n for no): ")
-        gamesPrompt.strip()
-        gamesPrompt.lower()
-    print("")
-
-    while gamesPrompt == "y":
-        gameCount += 1
-        print("-" * 80)
+        print(format("Yahtzee Score Card"))
+        print(format("Upper Section"))
+        print(format("ACES = "),(aces))
+        print(format("TWOS = "),(twos))
+        print(format("THREES = "),(threes))
+        print(format("FOURS = "),(fours))
+        print(format("FIVES = "),(fives))
+        print(format("SIXES = "),(sixes))
+        print(format("upperTotal = "),(upperTotal))
+        print(format("upperBonus = "),(upperTotal),("/"),("63"))
         print("")
-        print(format("Game", '>43s'), gameCount)
+        print(format("Lower Section"))
+        print(format("Three of a Kind = "),(threeOfKind))
+        print(format("Four of a Kind = "),(fourOfKind))
+        print(format("Full House = "),(fullHouse))
+        print(format("Small Straight = "),(smallStraight))
+        print(format("Large Straight = "),(largeStraight))
+        print(format("Yahtzee = "),(yahtzee))
+        print(format("Chance = "),(chance))
+        print(format("lowerTotal = "),(lowerTotal))
         print("")
-        game = singleGame()
-        game = list(game)
-        for x in game:
-            if x == True:
-                statIndex = game.index(x)
-        if statIndex == 0:
-            yahtzee += 1
-        elif statIndex == 1:
-            fullHouse += 1
-        elif statIndex == 2:
-            smallStraight += 1
-        elif statIndex == 3:
-            largeStraight += 1
-        elif statIndex == 4:
-            fourOfKind += 1
-        elif statIndex == 5:
-            threeOfKind += 1
-        else:
-            pass
         print("")
-        print(format("END OF GAME"), gameCount)
-        print("-" * 80)
+        totalScore = upperTotal + lowerTotal + upperBonus
+        print(format("Upper Total: "),(upperTotal),(" + "),("Upper Bonus: "),(upperBonus),(" + "),("Lower Total: "),(lowerTotal),(" = "),(totalScore))
         print("")
+        print(format("Game Over!!!"))
         gamesPrompt = input("Play another game? (y for yes, n for no): ")
         gamesPrompt.strip()
         gamesPrompt.lower()
@@ -263,54 +219,27 @@ def main():
             gamesPrompt.strip()
             gamesPrompt.lower()
         print("")
-    if gamesPrompt == "n":
-        yahtzeePer = (yahtzee / gameCount) * 100
-        fullHousePer = (fullHouse / gameCount) * 100
-        smallStraightPer = (smallStraight / gameCount) * 100
-        largeStraightPer = (largeStraight / gameCount) * 100
-        fourOfKindPer = (fourOfKind / gameCount) * 100
-        threeOfKindPer = (threeOfKind / gameCount) * 100
-        print("-" * 80)
-        print("")
-        print(format("STATS", '>43s'))
-        print("")
-        print("In", gameCount, "games, you rolled:\n")
-        if yahtzee > 1 or yahtzee == 0:
-            print("Yahtzees:", yahtzee, int(yahtzeePer), "%")
-            print("")
-        else:
-            print("Yahtzee:", yahtzee, int(yahtzeePer), "%")
-            print("")
-        if fullHouse > 1 or fullHouse == 0:
-            print("Full houses:", fullHouse, int(fullHousePer), "%")
-            print("")
-        else:
-            print("Full house:", fullHouse, int(fullHousePer), "%")
-            print("")
-        if smallStraight > 1 or smallStraight == 0:
-            print("Small straights:", smallStraight, int(smallStraightPer), "%")
-            print("")
-        else:
-            print("Small straight:", smallStraight, int(smallStraightPer), "%")
-            print("")
-        if largeStraight > 1 or largeStraight == 0:
-            print("Large straights:", largeStraight, int(largeStraightPer), "%")
-            print("")
-        else:
-            print("Large straight:", largeStraight, int(largeStraightPer), "%")
-            print("")
-        if fourOfKind > 1 or fourOfKind == 0:
-            print("Fours of a kind:", fourOfKind, int(fourOfKindPer), "%")
-            print("")
-        else:
-            print("Four of a kind:", fourOfKind, int(fourOfKindPer), "%")
-            print("")
-        if threeOfKind > 1 or threeOfKind == 0:
-            print("Threes of a kind:", threeOfKind, int(threeOfKindPer), "%")
-            print("")
-        else:
-            print("Three of a kind:", threeOfKind, round(threeOfKindPer, 2), "%")
-            print("")
 
+        if gamesPrompt == "y":
+            game = singleGame()
+        if gamesPrompt == "n":
+            print("Have a nice Day!")
+        exit()
+
+def main():
+    print("")
+    print("-" * 80)
+    print("")
+    print(format("Welcome to the Yahtzee Score Card!", '61s'), "Written by Steven Lukehart")
+    print("")
+    print("-" * 80)
+    print("")
+    print(format("Please enter Player 1's Name."))
+    name = input('Enter your name: ')
+    print(name)
+    print(format("Game 1", '>43s'))
+    print("")
+    input("Press Enter to continue")
+    game = singleGame()
 
 main()
